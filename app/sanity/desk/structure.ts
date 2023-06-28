@@ -1,4 +1,9 @@
-import { RiEditLine, RiEyeLine, RiListSettingsLine } from 'react-icons/ri';
+import {
+  RiEditLine,
+  RiEyeLine,
+  RiListSettingsLine,
+  RiUser3Line,
+} from 'react-icons/ri';
 import { VscReferences } from 'react-icons/vsc';
 import type {
   DefaultDocumentNodeResolver,
@@ -14,6 +19,7 @@ import { projectDetails } from '~/sanity/projectDetails';
 import { singletonTypes } from '../schema';
 import post from '../schema/documents/post';
 import redirect from '../schema/objects/redirect';
+import pastorSettings from '../schema/singletons/pastorSettings';
 import redirectSettings from '../schema/singletons/redirectSettings';
 import siteSettings from '../schema/singletons/siteSettings';
 
@@ -22,6 +28,16 @@ export const structure: StructureResolver = (S) => {
     .title('Posts')
     .icon(post.icon)
     .child(S.documentTypeList(post.name).title(post.title + 's'));
+
+  const pastor = S.listItem()
+    .title(pastorSettings.title as string)
+    .icon(RiUser3Line)
+    .child(
+      S.defaultDocument({
+        schemaType: pastorSettings.name,
+        documentId: pastorSettings.name,
+      }).title(pastorSettings.title as string)
+    );
 
   const redirects = S.listItem()
     .title(redirectSettings.title)
@@ -54,6 +70,8 @@ export const structure: StructureResolver = (S) => {
     .title('Content')
     .items([
       posts,
+      S.divider(),
+      pastor,
       // S.divider(),
       ...defaultListItems,
       S.divider(),

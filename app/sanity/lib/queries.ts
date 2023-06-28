@@ -21,23 +21,23 @@ export const imageFieldsFragment = `
   }
 `;
 
-const linkFragment = `
-  "_key": @.link[0]._key,
-  "_type": @.link[0]._type,
-  linkText,
-  @.link[0]._type == "linkInternal" => {
-    @.link[0].reference->isFrontpage => {
-      "href": '/'
-    },
-    @.link[0].reference->isFrontpage != true => {
-      "href": coalesce(@.link[0].reference->slug.current, '#')
-    }
-  },
-  @.link[0]._type == "linkExternal" => {
-    "href": coalesce(@.link[0].url, '#'),
-    "newWindow": @.link[0].newWindow
-  }
-`;
+// const linkFragment = `
+//   "_key": @.link[0]._key,
+//   "_type": @.link[0]._type,
+//   linkText,
+//   @.link[0]._type == "linkInternal" => {
+//     @.link[0].reference->isFrontpage => {
+//       "href": '/'
+//     },
+//     @.link[0].reference->isFrontpage != true => {
+//       "href": coalesce(@.link[0].reference->slug.current, '#')
+//     }
+//   },
+//   @.link[0]._type == "linkExternal" => {
+//     "href": coalesce(@.link[0].url, '#'),
+//     "newWindow": @.link[0].newWindow
+//   }
+// `;
 const richTextFragment = groq`
   _key,
   _type,
@@ -71,9 +71,20 @@ export const siteTitleQuery = groq`
 `;
 export const siteSettingsQuery = groq`
   *[_type == "siteSettings"][0]{
+    _id,
     title,
     tagline,
     siteUrl,
+    "pastor": *[_type == "pastorSettings"][0]{
+      name,
+      email,
+      phone,
+      address,
+      bio,
+      image {
+        ${imageFieldsFragment}
+      }
+    },
   }
 `;
 
@@ -94,8 +105,20 @@ export const postsQuery = groq`
     // "body": pt::text(body)
   }
 `;
+
 export const postBySlugQuery = groq`
   *[_type == "post" && slug.current == $slug][0] {
     ${postFields}
+  }
+`;
+
+export const indexQuery = groq`
+  {
+    "pastor": *[_type == "pastorSettings"][0]{
+      bio,
+    },
+    "posts": *[_type == "post"][0..2] {
+      ${postFields}
+    }
   }
 `;

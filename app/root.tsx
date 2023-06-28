@@ -21,9 +21,12 @@ import { ExitPreview } from '~/components/preview/exitPreview';
 import { getSiteSettings } from '~/sanity/client';
 import { getPreviewToken } from '~/sanity/lib/helpers';
 import styles from '~/styles/app.css';
+import tailwind from '~/styles/tailwind.css';
 
 import { ColorSchemeToggle } from './components/colorScheme/toggle';
 import CustomErrorBoundary from './components/errorBoundary/errorBoundary';
+import { Footer } from './components/footer';
+import { Header } from './components/header';
 import { middleware } from './http';
 import {
   ColorSchemeScript,
@@ -31,7 +34,6 @@ import {
 } from './lib/color-scheme/components';
 import { parseColorScheme } from './lib/color-scheme/server';
 import { isStudioRoute } from './lib/helpers';
-import tailwind from './styles/tailwind.css';
 
 export const links: LinksFunction = () => {
   return [
@@ -90,15 +92,18 @@ export const loader = async ({ request, params }: LoaderArgs) => {
 
   let colorScheme = await parseColorScheme(request);
 
-  const siteTitle = settings?.title ?? '';
+  const siteTitle = settings?.title ?? 'Personal Pastor Pages';
+  const tagline = settings?.tagline ?? 'Just another Sanity.io site';
   const siteUrl = settings?.siteUrl ?? '';
 
   return json({
     // serverState,
+    pathname,
     colorScheme,
     isStudio,
     settings,
     siteTitle,
+    tagline,
     siteUrl,
     preview,
     params: preview ? {} : null,
@@ -127,7 +132,9 @@ const Document: FunctionComponent<{
     <html
       lang="en"
       className={
-        isStudio ? '' : `min-h-full ${colorScheme === 'dark' ? 'dark' : ''}`
+        isStudio
+          ? ''
+          : `h-full antialiased ${colorScheme === 'dark' ? 'dark' : ''}`
       }
     >
       <head>
@@ -140,7 +147,9 @@ const Document: FunctionComponent<{
         {isStudio && typeof document === 'undefined' ? '__STYLES__' : null}
       </head>
       <body
-        className={isStudio ? '' : `min-h-screen bg-white dark:bg-slate-900`}
+        className={
+          isStudio ? '' : `flex h-full flex-col bg-zinc-50 dark:bg-black`
+        }
       >
         {children}
         <Scripts />
@@ -162,9 +171,18 @@ export default function App() {
         <Outlet />
       ) : (
         <>
-          <main className="mx-auto flex min-h-screen flex-col p-0 pt-16">
-            <Outlet />
-          </main>
+          <div className="fixed inset-0 flex justify-center sm:px-8">
+            <div className="flex w-full max-w-7xl lg:px-8">
+              <div className="w-full bg-white ring-1 ring-zinc-100 dark:bg-zinc-900 dark:ring-zinc-300/20" />
+            </div>
+          </div>
+          <div className="relative">
+            <Header />
+            <main>
+              <Outlet />
+            </main>
+            <Footer />
+          </div>
         </>
       )}
       {preview ? <ExitPreview /> : null}

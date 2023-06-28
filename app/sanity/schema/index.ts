@@ -6,6 +6,7 @@ import linkExternal from './objects/linkExternal';
 import linkInternal from './objects/linkInternal';
 import portableText from './objects/portableText';
 import redirect from './objects/redirect';
+import pastorSettings from './singletons/pastorSettings';
 import redirectSettings from './singletons/redirectSettings';
 import siteSettings from './singletons/siteSettings';
 
@@ -13,6 +14,7 @@ const singletonTypes = new Set([
   'media.tag',
   siteSettings.name,
   redirectSettings.name,
+  pastorSettings.name,
 ]);
 const schema: {
   types: SchemaTypeDefinition[];
@@ -21,6 +23,7 @@ const schema: {
   types: [
     portableText,
     siteSettings,
+    pastorSettings,
     post,
     link,
     linkInternal,

@@ -1,13 +1,15 @@
 import { createClient } from '@sanity/client';
 
 import { projectDetails } from '~/sanity/projectDetails';
+import type { Pastor } from '~/types/pastor';
 import type { Post } from '~/types/post';
-import { postZ } from '~/types/post';
+// import { postZ } from '~/types/post';
 import type { RedirectsQuery } from '~/types/redirect';
 import { redirectsZ } from '~/types/redirect';
 import type { SiteSettings } from '~/types/siteSettings';
 
 import {
+  indexQuery,
   postBySlugQuery,
   postsQuery,
   redirectsQuery,
@@ -74,8 +76,10 @@ export async function getPostBySlug({
     });
 
     if (data) {
-      console.log(data.body);
-      return postZ.parse(data);
+      // console.log(data.body);
+      // return postZ.parse(data);
+      // console.log(data.body);
+      return data;
     }
   }
 
@@ -91,4 +95,15 @@ export async function getPosts({
   }
 
   return [] as Post[];
+}
+
+export async function getIndexQuery({
+  preview = false,
+}: ClientProps): Promise<{ posts: Post[]; pastor: Pastor }> {
+  if (client) {
+    const data = await getClient(preview).fetch(indexQuery);
+    return data;
+  }
+
+  return {} as { posts: Post[]; pastor: Pastor };
 }

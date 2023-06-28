@@ -1,7 +1,9 @@
 import type { LoaderArgs } from '@remix-run/node';
 import { json, redirect } from '@remix-run/node';
+import { useLoaderData } from '@remix-run/react';
 
 import { PageNotFound } from '~/components/pageNotFound';
+import { getIndexQuery } from '~/sanity/client';
 import { getPreviewToken } from '~/sanity/lib/helpers';
 
 export async function loader({ params, request }: LoaderArgs) {
@@ -23,15 +25,18 @@ export async function loader({ params, request }: LoaderArgs) {
     throw redirect(`/error/404`, 308);
   }
 
+  const { posts } = await getIndexQuery({});
+
   return json(
     {
       preview,
-      query: null,
-      params: null,
+      posts,
     },
     { status: 404 }
   );
 }
 export default function SplatRoute() {
-  return <PageNotFound />;
+  const { posts } = useLoaderData<typeof loader>();
+
+  return <PageNotFound posts={posts} />;
 }

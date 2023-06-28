@@ -12,7 +12,7 @@ export const postZ = sanityDocumentZ.extend({
   // og: ogZ,
   body: richTextZ.optional().nullable(),
   featuredImage: sanityImageObjectExtendedZ.nullable().optional(),
-  notQueryable: z.boolean().default(false).nullable(),
+  hidden: z.boolean().default(false).nullable(),
 });
 
 export const postsZ = z.array(postZ);

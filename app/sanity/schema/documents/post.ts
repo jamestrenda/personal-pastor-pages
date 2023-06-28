@@ -54,12 +54,12 @@ export default defineType({
         }),
       ],
     }),
-    {
+    defineField({
       name: 'hidden',
       type: 'boolean',
       title: 'Hide from search engines?',
       description: 'Tell search engines not to index this page.',
       initialValue: false,
-    },
+    }),
   ],
 });

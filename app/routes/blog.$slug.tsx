@@ -2,6 +2,7 @@ import type { LoaderArgs, V2_MetaFunction } from '@remix-run/node';
 import { json, redirect } from '@remix-run/node';
 import { useLoaderData, useRouteError } from '@remix-run/react';
 
+import { Container } from '~/components/container';
 import { Post } from '~/components/post/post';
 import { PreviewWrapper } from '~/components/preview/wrapper';
 import { useRootLoaderData } from '~/lib/helpers';
@@ -26,7 +27,7 @@ export const loader = async ({ params, request }: LoaderArgs) => {
   const { slug } = params;
   const data = await getPostBySlug({ preview, slug });
 
-  console.log({ data });
+  // console.log({ data });
 
   if (!data) {
     // if no data was found for this slug, redirect to the splat route ($.tsx)
@@ -56,6 +57,10 @@ export default function BlogPostRoute() {
 export function ErrorBoundary() {
   const error = useRouteError();
 
-  console.error(error);
-  return <div className="bg-red-100 text-red-600">{JSON.stringify(error)}</div>;
+  // console.error(error);
+  return (
+    <Container className="mt-16 sm:mt-32">
+      <div className="bg-red-100 text-red-600">{JSON.stringify(error)}</div>
+    </Container>
+  );
 }
