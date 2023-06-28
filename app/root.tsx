@@ -138,7 +138,7 @@ const Document: FunctionComponent<{
       }
     >
       <head>
-        <title>{title}</title>
+        {/* <title>{title}</title> */}
         {isStudio ? null : <ColorSchemeScript />}
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         {/* TODO: update this with live URL */}

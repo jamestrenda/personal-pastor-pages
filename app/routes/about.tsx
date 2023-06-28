@@ -1,4 +1,4 @@
-import { LoaderArgs, json } from '@remix-run/node';
+import { LoaderArgs, V2_MetaFunction, json } from '@remix-run/node';
 import { useLoaderData, useRouteLoaderData } from '@remix-run/react';
 import { Container } from '~/components/container';
 import { Image } from '~/components/image';
@@ -10,6 +10,26 @@ import {
 } from '~/components/social';
 import { SocialLink } from '~/components/social/socialLink';
 import { useRootLoaderData } from '~/lib/helpers';
+import { loader } from '~/root';
+
+export const meta: V2_MetaFunction<typeof loader> = ({ params, data }) => {
+  const { siteTitle } = useRootLoaderData();
+
+  const title = ['About', siteTitle].filter(Boolean).join(' | ');
+  return [
+    {
+      // TODO: will eventually need to pull from a canonical url field in case the slug changes
+      // tagName: 'link',
+      // rel: 'canonical',
+      // href: `${siteUrl}/blog/${params.slug}`,
+      title,
+      // <meta
+      //     name="description"
+      //     content="I’m Spencer Sharp. I live in New York City, where I design the future."
+      //   />
+    },
+  ];
+};
 
 // export const loader = async ({ request }: LoaderArgs) => {
 //   //   const { preview } = await getPreviewToken(request);

@@ -14,19 +14,12 @@ import type { Post } from '~/types/post';
 import { Card } from '../components/card';
 import { SimpleLayout } from '../components/layout/simple';
 import { formatDate } from '../lib/utils/helpers';
+import { useRootLoaderData } from '~/lib/helpers';
 
 export const meta: V2_MetaFunction = ({ matches }) => {
-  const rootData = matches.find((match: RouteMatch) => match.id === `root`) as
-    | { data: SerializeFrom<typeof rootLoader> }
-    | undefined;
+  const { siteTitle } = useRootLoaderData();
 
-  const pageData = matches.find((match: RouteMatch) => match.id === `root`) as
-    | { data: SerializeFrom<typeof loader> }
-    | undefined;
-
-  const rootTitle = rootData ? rootData.data.siteTitle : '';
-
-  const title = [rootTitle, 'Blog'].filter(Boolean).join(' | ');
+  const title = ['Blog', siteTitle].filter(Boolean).join(' | ');
 
   return [{ title }];
 };

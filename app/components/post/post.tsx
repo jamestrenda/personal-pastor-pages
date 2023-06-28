@@ -5,8 +5,8 @@ import { Container } from '../container';
 import { Prose } from '../prose';
 import { RichText } from '../richText';
 
-const Post = ({ data }: { data: Post }) => {
-  const { title, body, featuredImage, _createdAt } = data;
+const Post = ({ post }: { post: Post }) => {
+  const { title, body, featuredImage, _createdAt } = post;
 
   return (
     <Container className="mt-16 lg:mt-32">

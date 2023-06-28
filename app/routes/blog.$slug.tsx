@@ -21,33 +21,45 @@ import { postBySlugQuery } from '~/sanity/lib/queries';
 //     },
 //   ];
 // };
+export const meta: V2_MetaFunction<typeof loader> = ({ data, params }) => {
+  const { siteTitle } = useRootLoaderData();
+
+  const { post } = data as { post: Post };
+
+  let title: string | string[] = [siteTitle];
+
+  if (!post.title) {
+    title = ['Blog', ...title];
+  }
+
+  title = [post.title as string, ...title].filter(Boolean).join(' | ');
+
+  return [{ title }];
+};
 
 export const loader = async ({ params, request }: LoaderArgs) => {
   const { preview } = await getPreviewToken(request);
   const { slug } = params;
-  const data = await getPostBySlug({ preview, slug });
+  const post = await getPostBySlug({ preview, slug });
 
-  // console.log({ data });
-
-  if (!data) {
-    // if no data was found for this slug, redirect to the splat route ($.tsx)
+  if (!post) {
     throw redirect(`/error/404`, 308);
   }
 
   return json({
-    data,
+    post,
     query: preview ? postBySlugQuery : null,
     params: preview ? { slug } : null,
   });
 };
 
 export default function BlogPostRoute() {
-  const { data, query, params } = useLoaderData<typeof loader>();
+  const { post, query, params } = useLoaderData<typeof loader>();
 
   return (
     <PreviewWrapper
-      data={data}
-      render={(data) => <Post data={data} />}
+      data={post}
+      render={(data) => <Post post={data} />}
       query={query}
       params={params}
     />
@@ -56,8 +68,6 @@ export default function BlogPostRoute() {
 
 export function ErrorBoundary() {
   const error = useRouteError();
-
-  // console.error(error);
   return (
     <Container className="mt-16 sm:mt-32">
       <div className="bg-red-100 text-red-600">{JSON.stringify(error)}</div>
