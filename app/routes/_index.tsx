@@ -6,10 +6,12 @@ import type {
 } from '@remix-run/node';
 import { json } from '@remix-run/node';
 import type { RouteMatch } from '@remix-run/react';
-import { useLoaderData } from '@remix-run/react';
+import { Link, useLoaderData } from '@remix-run/react';
 
 import { Card } from '~/components/card';
 import { Container } from '~/components/container';
+import { Prose } from '~/components/prose';
+import { VideoPoster } from '~/components/videoPoster';
 import { formatDate } from '~/lib/utils/helpers';
 import type { loader as rootLoader } from '~/root';
 import { getIndexQuery } from '~/sanity/client';
@@ -35,16 +37,17 @@ export const meta: V2_MetaFunction = ({ matches }) => {
 export const loader = async ({ request }: LoaderArgs) => {
   // const { preview } = await getPreviewToken(request);
 
-  const { posts, pastor } = await getIndexQuery({});
+  const { posts, pastor, sermons } = await getIndexQuery({});
 
   return json({
     posts,
     pastor,
+    sermons,
   });
 };
 
 export default function Index() {
-  const { posts, pastor } = useLoaderData<typeof loader>();
+  const { posts, pastor, sermons } = useLoaderData<typeof loader>();
 
   return (
     <>
@@ -59,8 +62,11 @@ export default function Index() {
         </div>
       </Container>
       <Container className="mt-24 md:mt-28">
-        <div className="mx-auto grid max-w-xl grid-cols-1 gap-y-20 lg:max-w-none lg:grid-cols-2">
-          <div className="flex flex-col gap-16">
+        <div className="mx-auto grid max-w-xl grid-cols-1 gap-y-10 lg:max-w-none lg:grid-cols-2">
+          <div className="flex flex-col gap-8">
+            <Prose className="border-b border-zinc-100 dark:border-zinc-700/40">
+              <h2>Recent Articles</h2>
+            </Prose>
             {posts.map((article) => (
               <Card as="article" key={article._id}>
                 <Card.Title href={`/blog/${article.slug}`}>
@@ -75,10 +81,34 @@ export default function Index() {
               </Card>
             ))}
           </div>
-          {/* <div className="space-y-10 lg:pl-16 xl:pl-24">
-            <Newsletter />
-            <Resume />
-          </div> */}
+          <div className="space-y-10 lg:pl-16 xl:pl-24">
+            <Prose className="border-b border-zinc-100 dark:border-zinc-700/40">
+              <h2>Sermons</h2>
+            </Prose>
+            {sermons.map((sermon) => (
+              <Card as="article" key={sermon._id}>
+                {/* {sermon.videoId && sermon.poster ? (
+                  <VideoPoster poster={sermon.poster} slug={sermon.videoId} />
+                ) : null} */}
+                <Card.Title
+                  href={`https://www.youtube-nocookie.com/embed/${sermon.videoId}`}
+                  openInNewTab
+                >
+                  {sermon.title}
+                </Card.Title>
+                {sermon.date ? (
+                  <Card.Eyebrow as="time" dateTime={sermon.date} decorate>
+                    {formatDate(sermon.date)}
+                  </Card.Eyebrow>
+                ) : null}
+                {/* TODO: add meta description or summary field */}
+                {/* <Card.Description>{article.description ?? ''}</Card.Description> */}
+                <Card.Cta>Watch sermon</Card.Cta>
+              </Card>
+            ))}
+            {/* <Newsletter />
+            <Resume /> */}
+          </div>
         </div>
       </Container>
     </>

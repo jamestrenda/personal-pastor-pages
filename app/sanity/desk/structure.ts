@@ -22,8 +22,15 @@ import redirect from '../schema/objects/redirect';
 import pastorSettings from '../schema/singletons/pastorSettings';
 import redirectSettings from '../schema/singletons/redirectSettings';
 import siteSettings from '../schema/singletons/siteSettings';
+import sermon from '../schema/documents/sermon';
 
-export const structure: StructureResolver = (S) => {
+export const structure: StructureResolver = (S, context) => {
+  const { currentUser } = context;
+
+  const isAdmin = currentUser?.roles.find(
+    ({ name }) => name === 'administrator'
+  );
+
   const posts = S.listItem()
     .title('Posts')
     .icon(post.icon)
@@ -65,19 +72,13 @@ export const structure: StructureResolver = (S) => {
       ![...singletonTypes, post.name, 'media.tag'].includes(listItem.getId()!)
   );
 
+  const nonAdminView = [posts, ...defaultListItems, S.divider(), pastor];
+  const adminVieww = [...nonAdminView, S.divider(), redirects, settings];
+
   return S.list()
     .id('root')
     .title('Content')
-    .items([
-      posts,
-      S.divider(),
-      pastor,
-      // S.divider(),
-      ...defaultListItems,
-      S.divider(),
-      redirects,
-      settings,
-    ]);
+    .items(isAdmin ? adminVieww : nonAdminView);
 };
 
 export const defaultDocumentNode: DefaultDocumentNodeResolver = (

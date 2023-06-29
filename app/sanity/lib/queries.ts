@@ -106,6 +106,19 @@ export const postsQuery = groq`
   }
 `;
 
+export const sermonsQuery = groq`
+  *[_type == "sermon"] {
+    _id,
+    title,
+    date,
+    keyText,
+    videoId,
+    poster {
+      ${imageFieldsFragment}
+    }
+  }
+`;
+
 export const postBySlugQuery = groq`
   *[_type == "post" && slug.current == $slug][0] {
     ${postFields}
@@ -119,6 +132,16 @@ export const indexQuery = groq`
     },
     "posts": *[_type == "post"][0..2] {
       ${postFields}
+    },
+    "sermons": *[_type == "sermon"][0..2] {
+      _id,
+      title,
+      date,
+      keyText,
+      videoId,
+      poster {
+        ${imageFieldsFragment}
+      }
     }
   }
 `;

@@ -23,7 +23,7 @@ export default function StudioPage() {
           config={config}
           // To enable guests view-only access to your Studio,
           // uncomment this line!
-          // unstable_noAuthBoundary
+          unstable_noAuthBoundary
         />
       )}
     </ClientOnly>

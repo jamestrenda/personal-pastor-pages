@@ -12,7 +12,7 @@ import { Image } from '../image';
 
 const navigation = [
   { name: 'About', href: '/about' },
-  { name: 'Blog', href: '/blot' },
+  { name: 'Blog', href: '/blog' },
   { name: 'Sermons', href: '/sermons' },
   { name: 'Devotionals', href: '/devotionals' },
   { name: 'Contact', href: '/contact' },
@@ -95,18 +95,21 @@ function MobileNavigation(props: { className?: string }) {
             focus
             className="fixed inset-x-4 top-8 z-50 origin-top rounded-3xl bg-white p-8 ring-1 ring-zinc-900/5 dark:bg-zinc-900 dark:ring-zinc-800"
           >
-            <div className="flex flex-row-reverse items-center justify-between">
+            <div className="absolute top-8 right-8">
               <Popover.Button aria-label="Close menu" className="-m-1 p-1">
                 <CloseIcon className="h-6 w-6 text-zinc-500 dark:text-zinc-400" />
               </Popover.Button>
-              <h2 className="text-sm font-medium text-zinc-600 dark:text-zinc-400">
-                Navigation
-              </h2>
+              <h2 className="sr-only">Navigation</h2>
             </div>
             <nav className="mt-6">
               <ul className="-my-2 divide-y divide-zinc-100 text-base text-zinc-800 dark:divide-zinc-100/5 dark:text-zinc-300">
                 {navigation.map((item) => (
-                  <MobileNavItem href={item.href}>{item.name}</MobileNavItem>
+                  <MobileNavItem
+                    href={item.href}
+                    key={`mobile-nav-${item.name}`}
+                  >
+                    {item.name}
+                  </MobileNavItem>
                 ))}
               </ul>
             </nav>
@@ -127,6 +130,7 @@ function NavItem({
   return (
     <li>
       <NavLink
+        prefetch="intent"
         to={href}
         className={({ isActive }) =>
           twMerge(
@@ -155,7 +159,9 @@ function DesktopNavigation(props: React.ComponentPropsWithoutRef<'nav'>) {
     <nav {...props}>
       <ul className="flex rounded-full bg-white/90 px-3 text-sm font-medium text-zinc-800 shadow-lg shadow-zinc-800/5 ring-1 ring-zinc-900/5 backdrop-blur dark:bg-zinc-800/90 dark:text-zinc-200 dark:ring-white/10">
         {navigation.map((item) => (
-          <NavItem href={item.href}>{item.name}</NavItem>
+          <NavItem href={item.href} key={`desktop-nav-${item.name}`}>
+            {item.name}
+          </NavItem>
         ))}
       </ul>
     </nav>
@@ -199,13 +205,13 @@ function Avatar({
     <Link
       prefetch="intent"
       aria-label="Home"
-      className={twMerge(className, 'pointer-events-auto')}
+      className={twMerge('pointer-events-auto relative z-10', className)}
       {...props}
       to="/"
     >
       <Image
         id={image.asset._id}
-        alt={image.asset.altText ?? 'Callout image'}
+        alt={image.asset.altText ?? 'Pastor avatar'}
         width={128}
         height={128}
         crop={image.crop}

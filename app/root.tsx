@@ -37,6 +37,7 @@ import { isStudioRoute } from './lib/helpers';
 
 export const links: LinksFunction = () => {
   return [
+    /* ICONS */
     // {
     // 	rel: 'apple-touch-icon',
     // 	sizes: '180x180',
@@ -56,11 +57,26 @@ export const links: LinksFunction = () => {
     // },
     // { rel: 'manifest', href: '/site.webmanifest' },
     { rel: 'icon', href: '/favicon.ico' },
+    /* FONTS */
     // { rel: 'stylesheet', href: '/fonts/nunito-sans/font.css' },
+    // {
+    //   rel: 'preconnect',
+    //   href: 'https://fonts.gstatic.com',
+    //   crossOrigin: 'anonymous',
+    // },
+    // {
+    //   rel: 'preconnect',
+    //   href: 'https://fonts.googleapis.com',
+    //   crossOrigin: 'anonymous',
+    // },
+    // {
+    //   href: 'https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;700&family=Inter:wght@500;700;800&family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap',
+    //   rel: 'stylesheet',
+    // },
     { rel: 'preconnect', href: 'https://cdn.sanity.io' },
     { rel: 'stylesheet', href: tailwind },
     { rel: 'stylesheet', href: styles },
-    ...(cssBundleHref ? [{ rel: 'stylesheet', href: cssBundleHref }] : []),
+    // ...(cssBundleHref ? [{ rel: 'stylesheet', href: cssBundleHref }] : []),
   ].filter(Boolean);
 };
 export const meta: V2_MetaFunction = ({ data }) => [
@@ -97,7 +113,6 @@ export const loader = async ({ request, params }: LoaderArgs) => {
   const siteUrl = settings?.siteUrl ?? '';
 
   return json({
-    // serverState,
     pathname,
     colorScheme,
     isStudio,
@@ -138,10 +153,8 @@ const Document: FunctionComponent<{
       }
     >
       <head>
-        {/* <title>{title}</title> */}
         {isStudio ? null : <ColorSchemeScript />}
         <meta name="viewport" content="width=device-width,initial-scale=1" />
-        {/* TODO: update this with live URL */}
         <Meta />
         <Links />
         {isStudio && typeof document === 'undefined' ? '__STYLES__' : null}

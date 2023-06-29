@@ -1,3 +1,7 @@
+/* This is a hack to remove the triangle from the details element */
+/* But it doesn't seem to have any effect in Chrome. Instead, setting the
+   the element's display property to 'flex' seems to remove the triangle
+   in Chrome. ¯\_(ツ)_/¯ */
 ._no-triangle::-webkit-details-marker {
   display: none;
   &::-webkit-details-marker {

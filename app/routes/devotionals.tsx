@@ -22,7 +22,7 @@ const DevotionalsRoute = () => {
   return (
     <Container className="mt-16 sm:mt-32">
       <Prose>
-        <p>List devotionals</p>
+        <p className="text-center">List devotionals</p>
       </Prose>
     </Container>
   );

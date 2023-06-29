@@ -13,8 +13,10 @@ import {
   postBySlugQuery,
   postsQuery,
   redirectsQuery,
+  sermonsQuery,
   siteSettingsQuery,
 } from './lib/queries';
+import { Sermon } from '~/types/sermon';
 
 type ClientProps = {
   preview?: boolean;
@@ -97,13 +99,29 @@ export async function getPosts({
   return [] as Post[];
 }
 
+export async function getSermons({
+  preview = false,
+}: ClientProps): Promise<Sermon[]> {
+  if (client) {
+    const data: Sermon[] = await getClient(preview).fetch(sermonsQuery);
+    return data;
+  }
+
+  return [] as Sermon[];
+}
+
+type IndexQuery = {
+  posts: Post[];
+  pastor: Pastor;
+  sermons: Sermon[];
+};
 export async function getIndexQuery({
   preview = false,
-}: ClientProps): Promise<{ posts: Post[]; pastor: Pastor }> {
+}: ClientProps): Promise<IndexQuery> {
   if (client) {
     const data = await getClient(preview).fetch(indexQuery);
     return data;
   }
 
-  return {} as { posts: Post[]; pastor: Pastor };
+  return {} as IndexQuery;
 }

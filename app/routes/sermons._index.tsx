@@ -8,13 +8,14 @@ import type { RouteMatch } from '@remix-run/react';
 import { useLoaderData } from '@remix-run/react';
 
 import type { loader as rootLoader } from '~/root';
-import { getPosts } from '~/sanity/client';
+import { getPosts, getSermons } from '~/sanity/client';
 import type { Post } from '~/types/post';
 
 import { Card } from '../components/card';
 import { SimpleLayout } from '../components/layout/simple';
 import { formatDate } from '../lib/utils/helpers';
 import { useRootLoaderData } from '~/lib/helpers';
+import { Sermon } from '~/types/sermon';
 
 export const meta: V2_MetaFunction = ({ matches }) => {
   const { siteTitle } = useRootLoaderData();
@@ -34,54 +35,61 @@ export const meta: V2_MetaFunction = ({ matches }) => {
 
 export const loader = async ({ request }: LoaderArgs) => {
   // const { preview } = await getPreviewToken(request);
-  const posts = await getPosts({});
+  const sermons = await getSermons({});
 
-  // console.log(posts);
+  // console.log(sermons);
   return json({
-    posts,
+    sermons,
   });
 };
 
-function Article({ article }: { article: Post }) {
+function Sermon({ sermon }: { sermon: Sermon }) {
   return (
     <article className="md:grid md:grid-cols-4 md:items-baseline">
       <Card className="md:col-span-3">
-        <Card.Title href={`/blog/${article.slug}`}>{article.title}</Card.Title>
+        <Card.Title
+          href={`https://www.youtube-nocookie.com/embed/${sermon.videoId}`}
+          openInNewTab
+        >
+          {sermon.title}
+        </Card.Title>
+        {sermon.date ? (
+          <Card.Eyebrow
+            as="time"
+            dateTime={sermon.date}
+            className="md:hidden"
+            decorate
+          >
+            {formatDate(sermon.date)}
+          </Card.Eyebrow>
+        ) : null}
+        <Card.Cta>Watch sermon</Card.Cta>
+      </Card>
+      {sermon.date ? (
         <Card.Eyebrow
           as="time"
-          dateTime={article._updatedAt}
-          className="md:hidden"
-          decorate
+          dateTime={sermon.date}
+          className="mt-1 hidden md:block"
         >
-          {formatDate(article._updatedAt)}
+          {formatDate(sermon.date)}
         </Card.Eyebrow>
-        {/* TODO: add meta description field to post */}
-        {/* <Card.Description>{article.description}</Card.Description> */}
-        <Card.Cta>Read article</Card.Cta>
-      </Card>
-      <Card.Eyebrow
-        as="time"
-        dateTime={article._updatedAt}
-        className="mt-1 hidden md:block"
-      >
-        {formatDate(article._updatedAt)}
-      </Card.Eyebrow>
+      ) : null}
     </article>
   );
 }
 
-export default function BlogIndex() {
-  const { posts } = useLoaderData<typeof loader>();
+export default function SermonIndex() {
+  const { sermons } = useLoaderData<typeof loader>();
   return (
     <>
       <SimpleLayout
-        title="Aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos."
+        title="Sermons"
         intro="Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget neque egestas, iaculis dui vel, eleifend orci. Nam vitae felis interdum, rhoncus mi at, mattis neque. Fusce nisl turpis, sodales non efficitur quis, mollis et urna."
       >
         <div className="md:border-l md:border-zinc-100 md:pl-6 md:dark:border-zinc-700/40">
           <div className="flex max-w-3xl flex-col space-y-16">
-            {posts.map((article) => (
-              <Article key={article.slug} article={article} />
+            {sermons.map((sermon) => (
+              <Sermon key={sermon._id} sermon={sermon} />
             ))}
           </div>
         </div>
