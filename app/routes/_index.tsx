@@ -76,7 +76,11 @@ export default function Index() {
                   {formatDate(article._createdAt)}
                 </Card.Eyebrow>
                 {/* TODO: add meta description or summary field */}
-                {/* <Card.Description>{article.description ?? ''}</Card.Description> */}
+                {article.seo?.description ? (
+                  <Card.Description>
+                    {article.seo?.description}
+                  </Card.Description>
+                ) : null}
                 <Card.Cta>Read article</Card.Cta>
               </Card>
             ))}

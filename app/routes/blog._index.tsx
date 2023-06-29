@@ -55,8 +55,9 @@ function Article({ article }: { article: Post }) {
         >
           {formatDate(article._updatedAt)}
         </Card.Eyebrow>
-        {/* TODO: add meta description field to post */}
-        {/* <Card.Description>{article.description}</Card.Description> */}
+        {article.seo?.description ? (
+          <Card.Description>{article.seo?.description}</Card.Description>
+        ) : null}
         <Card.Cta>Read article</Card.Cta>
       </Card>
       <Card.Eyebrow
