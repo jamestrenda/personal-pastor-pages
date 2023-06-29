@@ -76,7 +76,7 @@ export const links: LinksFunction = () => {
     { rel: 'preconnect', href: 'https://cdn.sanity.io' },
     { rel: 'stylesheet', href: tailwind },
     { rel: 'stylesheet', href: styles },
-    // ...(cssBundleHref ? [{ rel: 'stylesheet', href: cssBundleHref }] : []),
+    ...(cssBundleHref ? [{ rel: 'stylesheet', href: cssBundleHref }] : []),
   ].filter(Boolean);
 };
 export const meta: V2_MetaFunction = ({ data }) => [
