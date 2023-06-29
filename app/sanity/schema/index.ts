@@ -10,6 +10,7 @@ import pastorSettings from './singletons/pastorSettings';
 import redirectSettings from './singletons/redirectSettings';
 import siteSettings from './singletons/siteSettings';
 import sermon from './documents/sermon';
+import seo from './objects/seo';
 
 const singletonTypes = new Set([
   'media.tag',
@@ -27,6 +28,7 @@ const schema: {
     pastorSettings,
     post,
     sermon,
+    seo,
     link,
     linkInternal,
     linkExternal,

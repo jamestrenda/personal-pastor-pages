@@ -22,14 +22,12 @@ import redirect from '../schema/objects/redirect';
 import pastorSettings from '../schema/singletons/pastorSettings';
 import redirectSettings from '../schema/singletons/redirectSettings';
 import siteSettings from '../schema/singletons/siteSettings';
-import sermon from '../schema/documents/sermon';
+import { isAdminUser } from '../lib/helpers';
 
 export const structure: StructureResolver = (S, context) => {
   const { currentUser } = context;
 
-  const isAdmin = currentUser?.roles.find(
-    ({ name }) => name === 'administrator'
-  );
+  const isAdmin = isAdminUser(currentUser);
 
   const posts = S.listItem()
     .title('Posts')

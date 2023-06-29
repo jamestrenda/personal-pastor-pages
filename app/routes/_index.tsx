@@ -16,24 +16,24 @@ import { formatDate } from '~/lib/utils/helpers';
 import type { loader as rootLoader } from '~/root';
 import { getIndexQuery } from '~/sanity/client';
 
-// TODO: fix tagline not showing in title
 export const meta: V2_MetaFunction = ({ matches }) => {
   const rootData = matches.find((match: RouteMatch) => match.id === `root`) as
     | { data: SerializeFrom<typeof rootLoader> }
     | undefined;
 
-  // const pageData = matches.find((match: RouteMatch) => match.id === `root`) as
-  //   | { data: SerializeFrom<typeof loader> }
-  //   | undefined;
-
   const rootTitle = rootData ? rootData.data.siteTitle : '';
   const tagline = rootData ? rootData.data.tagline : '';
 
   const title = [rootTitle, tagline].filter(Boolean).join(' | ');
-  // console.log(title);
-  return [{ title }];
+  return [
+    { title },
+    {
+      tagName: 'link',
+      rel: 'canonical',
+      href: rootData?.data.siteUrl,
+    },
+  ];
 };
-
 export const loader = async ({ request }: LoaderArgs) => {
   // const { preview } = await getPreviewToken(request);
 

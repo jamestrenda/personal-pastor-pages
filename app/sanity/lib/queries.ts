@@ -64,6 +64,7 @@ const postFields = groq`
   featuredImage {
     ${imageFieldsFragment}
   },
+  seo
 `;
 
 export const siteTitleQuery = groq`
@@ -102,6 +103,7 @@ export const postsQuery = groq`
     _updatedAt,
     title,
     ${slugProjection},
+    seo
     // "body": pt::text(body)
   }
 `;

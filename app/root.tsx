@@ -79,16 +79,6 @@ export const links: LinksFunction = () => {
     ...(cssBundleHref ? [{ rel: 'stylesheet', href: cssBundleHref }] : []),
   ].filter(Boolean);
 };
-export const meta: V2_MetaFunction = ({ data }) => [
-  {
-    charset: 'utf-8',
-  },
-  {
-    tagName: 'link',
-    rel: 'canonical',
-    href: data?.settings?.general?.siteUrl,
-  },
-];
 
 export const loader = async ({ request, params }: LoaderArgs) => {
   const pathname = new URL(request.url).pathname;
@@ -109,7 +99,7 @@ export const loader = async ({ request, params }: LoaderArgs) => {
   let colorScheme = await parseColorScheme(request);
 
   const siteTitle = settings?.title ?? 'Personal Pastor Pages';
-  const tagline = settings?.tagline ?? 'Just another Sanity.io site';
+  const tagline = settings?.tagline ?? 'Just another pastor site';
   const siteUrl = settings?.siteUrl ?? '';
 
   return json({
@@ -154,6 +144,7 @@ const Document: FunctionComponent<{
     >
       <head>
         {isStudio ? null : <ColorSchemeScript />}
+        <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <Meta />
         <Links />

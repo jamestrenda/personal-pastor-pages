@@ -10,31 +10,55 @@ import { getPostBySlug } from '~/sanity/client';
 import { getPreviewToken } from '~/sanity/lib/helpers';
 import { postBySlugQuery } from '~/sanity/lib/queries';
 
-// export const meta: V2_MetaFunction<typeof loader> = ({ params, data }) => {
-//   const { siteUrl } = useRootLoaderData();
-//   return [
-//     {
-//       // TODO: will eventually need to pull from a canonical url field in case the slug changes
-//       tagName: 'link',
-//       rel: 'canonical',
-//       href: `${siteUrl}/blog/${params.slug}`,
-//     },
-//   ];
-// };
 export const meta: V2_MetaFunction<typeof loader> = ({ data, params }) => {
-  const { siteTitle } = useRootLoaderData();
+  const { siteTitle, siteUrl } = useRootLoaderData();
 
   const { post } = data as { post: Post };
 
+  // TITLE
+  const seoTitle = post?.seo?.title;
   let title: string | string[] = [siteTitle];
 
-  if (!post.title) {
+  if (seoTitle) {
+    title = [seoTitle, ...title];
+  } else if (post.title) {
+    title = [post.title, ...title];
+  } else {
     title = ['Blog', ...title];
   }
 
-  title = [post.title as string, ...title].filter(Boolean).join(' | ');
+  title = title.filter(Boolean).join(' | ');
 
-  return [{ title }];
+  // ROBOTS
+  const robots = post?.seo?.robots;
+  const robotsMeta = robots?.length
+    ? [
+        {
+          name: 'robots',
+          content: robots.join(', '),
+        },
+      ]
+    : [];
+
+  // CANONICAL
+  const canonicalHref =
+    post?.seo?.canonicalUrl ?? `${siteUrl}/blog/${params.slug}`;
+  const canonical = {
+    tagName: 'link',
+    rel: 'canonical',
+    href: canonicalHref,
+  };
+
+  // DESCRIPTION
+  const description = post?.seo?.description
+    ? [{ description: post.seo.description }]
+    : [];
+
+  // TODO: OG IMAGE
+
+  const metaTags = [...robotsMeta, canonical, { title }, ...description];
+
+  return metaTags;
 };
 
 export const loader = async ({ params, request }: LoaderArgs) => {

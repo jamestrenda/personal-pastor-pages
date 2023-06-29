@@ -3,12 +3,19 @@ import { defineField, defineType } from 'sanity';
 
 import slug from '../objects/slug';
 import title from '../objects/title';
+import { isAdminUser } from '~/sanity/lib/helpers';
 
 export default defineType({
   name: 'post',
   title: 'Post',
   type: 'document',
   icon: RiDraftLine,
+  groups: [
+    {
+      title: 'SEO',
+      name: 'seo',
+    },
+  ],
   preview: {
     select: {
       title: 'title',
@@ -55,11 +62,10 @@ export default defineType({
       ],
     }),
     defineField({
-      name: 'hidden',
-      type: 'boolean',
-      title: 'Hide from search engines?',
-      description: 'Tell search engines not to index this page.',
-      initialValue: false,
+      name: 'seo',
+      type: 'seo',
+      group: 'seo',
+      hidden: ({ currentUser }) => !isAdminUser(currentUser),
     }),
   ],
 });
