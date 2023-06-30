@@ -17,7 +17,7 @@ function ColorSchemeToggle() {
           className="h-6 w-6 fill-zinc-100 stroke-zinc-500 transition group-hover:fill-zinc-200 group-hover:stroke-zinc-700 dark:hidden dark:fill-teal-50 dark:stroke-teal-500 dark:group-hover:fill-teal-50 dark:group-hover:stroke-teal-600"
           size={24}
         />
-        <TbMoon className="hidden h-6 w-6 fill-zinc-700 stroke-zinc-500 transition dark:block dark:group-hover:fill-teal-400/50 [@media_not_(prefers-color-scheme:dark)]:fill-teal-400/30 [@media_not_(prefers-color-scheme:dark)]:stroke-teal-500" />
+        <TbMoon className="hidden h-6 w-6 fill-zinc-700 stroke-zinc-500 transition dark:block dark:group-hover:fill-teal-400/50 dark:fill-teal-400/30 dark:stroke-teal-500" />
       </summary>
       <DetailsPopup>
         <Form
