@@ -61,7 +61,7 @@ export default function DevotionalsIndex() {
   return (
     <>
       <SimpleLayout
-        title="Aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos."
+        title="Devotionals"
         intro="Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget neque egestas, iaculis dui vel, eleifend orci. Nam vitae felis interdum, rhoncus mi at, mattis neque. Fusce nisl turpis, sodales non efficitur quis, mollis et urna."
       >
         <div className="md:border-l md:border-zinc-100 md:pl-6 md:dark:border-zinc-700/40">
