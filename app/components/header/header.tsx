@@ -15,7 +15,7 @@ const navigation = [
   { name: 'Blog', href: '/blog' },
   { name: 'Sermons', href: '/sermons' },
   { name: 'Devotionals', href: '/devotionals' },
-  { name: 'Contact', href: '/contact' },
+  // { name: 'Contact', href: '/contact' },
 ];
 
 function CloseIcon(props: React.SVGAttributes<SVGElement>) {

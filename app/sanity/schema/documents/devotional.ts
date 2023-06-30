@@ -1,15 +1,17 @@
-import { RiDraftLine } from 'react-icons/ri';
+import { BiBible } from 'react-icons/bi';
+
 import { defineField, defineType } from 'sanity';
 
 import slug from '../objects/slug';
 import title from '../objects/title';
 import { isAdminUser } from '~/sanity/lib/helpers';
+import { RiBookOpenLine } from 'react-icons/ri';
 
 export default defineType({
-  name: 'post',
-  title: 'Post',
+  name: 'devotional',
+  title: 'Devotional',
   type: 'document',
-  icon: RiDraftLine,
+  icon: RiBookOpenLine,
   groups: [
     {
       title: 'SEO',
@@ -28,7 +30,7 @@ export default defineType({
       title?: string;
       slug?: { current: string };
     }) => {
-      const path = `blog/${slug.current}`;
+      const path = `devotionals/${slug.current}`;
 
       return {
         title,
@@ -38,7 +40,7 @@ export default defineType({
   },
   fields: [
     title,
-    slug('blog'),
+    slug('devotionals'),
     defineField({
       name: 'body',
       title: 'Body',

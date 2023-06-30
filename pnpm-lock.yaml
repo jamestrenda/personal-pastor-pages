@@ -94,6 +94,9 @@ dependencies:
   remix-utils:
     specifier: ^6.4.1
     version: 6.4.1(@remix-run/react@1.18.0)(@remix-run/server-runtime@1.18.0)(react@18.2.0)(typescript@5.1.3)(zod@3.21.4)
+  rxjs:
+    specifier: ^7.8.1
+    version: 7.8.1
   sanity:
     specifier: ^3.12.2
     version: 3.12.2(@types/react@18.2.12)(react-dom@18.2.0)(react@18.2.0)(styled-components@5.3.11)
@@ -115,6 +118,9 @@ dependencies:
   sanity-plugin-note-field:
     specifier: ^2.0.2
     version: 2.0.2(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(sanity@3.12.2)(styled-components@5.3.11)
+  sanity-plugin-tags:
+    specifier: ^2.0.1
+    version: 2.0.1(@types/react@18.2.12)(react-dom@18.2.0)(react@18.2.0)(rxjs@7.8.1)(sanity@3.12.2)(styled-components@5.3.11)
   slug:
     specifier: ^8.2.2
     version: 8.2.2
@@ -9865,6 +9871,26 @@ packages:
       - react-dom
       - react-is
       - styled-components
+    dev: false
+
+  /sanity-plugin-tags@2.0.1(@types/react@18.2.12)(react-dom@18.2.0)(react@18.2.0)(rxjs@7.8.1)(sanity@3.12.2)(styled-components@5.3.11):
+    resolution: {integrity: sha512-oy11bDcvf3o/HnFw2KZRGANxRjR/2x+ts3yH/bWbpl7MRHDEBXajzF2vc7rPE8dekclKz0f0L+Xfm1ksjQPMLw==}
+    engines: {node: '>=14'}
+    peerDependencies:
+      react: ^18
+      rxjs: ^7.8.0
+      sanity: ^3
+      styled-components: ^5.3.6
+    dependencies:
+      '@sanity/incompatible-plugin': 1.0.4(react-dom@18.2.0)(react@18.2.0)
+      react: 18.2.0
+      react-select: 5.7.3(@types/react@18.2.12)(react-dom@18.2.0)(react@18.2.0)
+      rxjs: 7.8.1
+      sanity: 3.12.2(@types/react@18.2.12)(react-dom@18.2.0)(react@18.2.0)(styled-components@5.3.11)
+      styled-components: 5.3.11(@babel/core@7.22.5)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)
+    transitivePeerDependencies:
+      - '@types/react'
+      - react-dom
     dev: false
 
   /sanity@3.12.2(@types/react@18.2.12)(react-dom@18.2.0)(react@18.2.0)(styled-components@5.3.11):

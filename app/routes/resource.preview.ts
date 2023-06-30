@@ -77,8 +77,6 @@ export const loader = async ({ request }: LoaderArgs) => {
       validSlug = `/blog/${slug}`;
 
       break;
-    case 'notFoundSettings':
-      validSlug = `/error/404`;
   }
 
   function noSlugFound() {

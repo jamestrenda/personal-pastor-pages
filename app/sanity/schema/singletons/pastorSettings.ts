@@ -16,19 +16,13 @@ export default defineType({
       type: 'string',
     }),
     defineField({
-      name: 'address',
-      title: 'Mailing Address',
-      type: 'text',
-      rows: 3,
-    }),
-    defineField({
       name: 'phone',
       title: 'Phone Number',
       type: 'string',
       validation: (Rule) =>
         Rule.custom((value) => {
           if (!value) return true;
-          const pattern = /^\d{3}-\d{3}-\d{4}$/;
+          const pattern = /^\d{10}$/;
           const valid = pattern.test(value);
           return (
             valid || 'Please enter a phone number in the format: XXX-XXX-XXXX'
@@ -46,6 +40,7 @@ export default defineType({
       title: 'Short Bio',
       type: 'text',
       description: 'A short bio to display on the homepage',
+      validation: (Rule) => Rule.max(400),
     }),
     defineField({
       name: 'image',
@@ -54,6 +49,7 @@ export default defineType({
       options: {
         hotspot: true,
       },
+      // TODO: figure out how to validate file size
       // validation: (Rule) => {
       //   return Rule.custom((field) => {
       //     if (!field?.asset) return true;

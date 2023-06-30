@@ -9,6 +9,8 @@ import { redirectsZ } from '~/types/redirect';
 import type { SiteSettings } from '~/types/siteSettings';
 
 import {
+  devotionalBySlugQuery,
+  devotionalsQuery,
   indexQuery,
   postBySlugQuery,
   postsQuery,
@@ -17,6 +19,7 @@ import {
   siteSettingsQuery,
 } from './lib/queries';
 import { Sermon } from '~/types/sermon';
+import { Devotional } from '~/types/devotional';
 
 type ClientProps = {
   preview?: boolean;
@@ -71,12 +74,10 @@ export async function getPostBySlug({
   slug?: string;
 }): Promise<Post> {
   // get page id and page builder types
-
   if (client) {
     const data: Post = await getClient(preview).fetch(postBySlugQuery, {
       slug,
     });
-
     if (data) {
       // console.log(data.body);
       // return postZ.parse(data);
@@ -97,6 +98,42 @@ export async function getPosts({
   }
 
   return [] as Post[];
+}
+
+export async function getDevotionalBySlug({
+  preview = false,
+  slug,
+}: ClientProps & {
+  slug?: string;
+}): Promise<Devotional> {
+  // get page id and page builder types
+  if (client) {
+    const data: Devotional = await getClient(preview).fetch(
+      devotionalBySlugQuery,
+      {
+        slug,
+      }
+    );
+    if (data) {
+      // console.log(data.body);
+      // return postZ.parse(data);
+      // console.log(data.body);
+      return data;
+    }
+  }
+
+  return {} as Devotional;
+}
+
+export async function getDevotionals({
+  preview = false,
+}: ClientProps): Promise<Devotional[]> {
+  if (client) {
+    const data: Devotional[] = await getClient(preview).fetch(devotionalsQuery);
+    return data;
+  }
+
+  return [] as Devotional[];
 }
 
 export async function getSermons({

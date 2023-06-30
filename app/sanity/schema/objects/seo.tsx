@@ -84,17 +84,5 @@ export default {
         ],
       },
     }),
-    // defineField({
-    //   name: 'followLinks',
-    //   type: 'array',
-    //   title: 'Should search engines follow links on this page?',
-    //   options: {
-    //     list: [
-    //       { title: 'Follow', value: 'follow' },
-    //       { title: 'No Follow', value: 'nofollow' },
-    //     ],
-    //   },
-
-    // }),
   ],
 };

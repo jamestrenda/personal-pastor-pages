@@ -90,11 +90,11 @@ export const siteSettingsQuery = groq`
 `;
 
 export const redirectsQuery = groq`
-  *[_type == "redirectSettings"][0].redirects`;
+  *[_type == "redirect"]`;
 
-export const redirectSettingsIdQuery = groq`
-  *[_type == "redirectSettings"][0]._id
-`;
+// export const redirectSettingsIdQuery = groq`
+//   *[_type == "redirectSettings"][0]._id
+// `;
 export const postsQuery = groq`
   *[_type == "post"] {
     _id,
@@ -107,6 +107,41 @@ export const postsQuery = groq`
     // "body": pt::text(body)
   }
 `;
+export const postBySlugQuery = groq`
+*[_type == "post" && slug.current == $slug][0] {
+  ${postFields}
+}
+`;
+
+export const devotionalsQuery = groq`
+  *[_type == "devotional"] {
+    _id,
+    _type,
+    _createdAt,
+    _updatedAt,
+    title,
+    ${slugProjection},
+    seo
+    // "body": pt::text(body)
+  }
+`;
+export const devotionalBySlugQuery = groq`
+*[_type == "post" && slug.current == $slug][0] {
+  _id,
+  _type,
+  _createdAt,
+  _updatedAt,
+  title,
+  ${slugProjection},
+  body[]{
+    ${richTextFragment}
+  },
+  featuredImage {
+    ${imageFieldsFragment}
+  },
+  seo
+}
+`;
 
 export const sermonsQuery = groq`
   *[_type == "sermon"] {
@@ -115,15 +150,6 @@ export const sermonsQuery = groq`
     date,
     keyText,
     videoId,
-    poster {
-      ${imageFieldsFragment}
-    }
-  }
-`;
-
-export const postBySlugQuery = groq`
-  *[_type == "post" && slug.current == $slug][0] {
-    ${postFields}
   }
 `;
 

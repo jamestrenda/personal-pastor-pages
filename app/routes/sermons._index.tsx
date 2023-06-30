@@ -1,15 +1,8 @@
-import type {
-  LoaderArgs,
-  SerializeFrom,
-  V2_MetaFunction,
-} from '@remix-run/node';
+import type { LoaderArgs, V2_MetaFunction } from '@remix-run/node';
 import { json } from '@remix-run/node';
-import type { RouteMatch } from '@remix-run/react';
 import { useLoaderData } from '@remix-run/react';
 
-import type { loader as rootLoader } from '~/root';
-import { getPosts, getSermons } from '~/sanity/client';
-import type { Post } from '~/types/post';
+import { getSermons } from '~/sanity/client';
 
 import { Card } from '../components/card';
 import { SimpleLayout } from '../components/layout/simple';
@@ -34,10 +27,8 @@ export const meta: V2_MetaFunction = ({ matches }) => {
 //       </Head> */}
 
 export const loader = async ({ request }: LoaderArgs) => {
-  // const { preview } = await getPreviewToken(request);
   const sermons = await getSermons({});
 
-  // console.log(sermons);
   return json({
     sermons,
   });

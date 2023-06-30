@@ -3,26 +3,26 @@ import { json, redirect } from '@remix-run/node';
 import { useLoaderData, useRouteError } from '@remix-run/react';
 
 import { Container } from '~/components/container';
-import { Post } from '~/components/post/post';
+import { Devotional } from '~/components/devotional';
 import { PreviewWrapper } from '~/components/preview/wrapper';
 import { useRootLoaderData } from '~/lib/helpers';
-import { getPostBySlug } from '~/sanity/client';
+import { getDevotionalBySlug } from '~/sanity/client';
 import { getPreviewToken } from '~/sanity/lib/helpers';
-import { postBySlugQuery } from '~/sanity/lib/queries';
+import { devotionalBySlugQuery } from '~/sanity/lib/queries';
 
 export const meta: V2_MetaFunction<typeof loader> = ({ data, params }) => {
   const { siteTitle, siteUrl } = useRootLoaderData();
 
-  const { post } = data as { post: Post };
+  const { devotional } = data as { devotional: Devotional };
 
   // TITLE
-  const seoTitle = post?.seo?.title;
+  const seoTitle = devotional?.seo?.title;
   let title: string | string[] = [siteTitle];
 
   if (seoTitle) {
     title = [seoTitle, ...title];
-  } else if (post.title) {
-    title = [post.title, ...title];
+  } else if (devotional.title) {
+    title = [devotional.title, ...title];
   } else {
     title = ['Blog', ...title];
   }
@@ -30,7 +30,7 @@ export const meta: V2_MetaFunction<typeof loader> = ({ data, params }) => {
   title = title.filter(Boolean).join(' | ');
 
   // ROBOTS
-  const robots = post?.seo?.robots;
+  const robots = devotional?.seo?.robots;
   const robotsMeta = robots?.length
     ? [
         {
@@ -42,7 +42,7 @@ export const meta: V2_MetaFunction<typeof loader> = ({ data, params }) => {
 
   // CANONICAL
   const canonicalHref =
-    post?.seo?.canonicalUrl ?? `${siteUrl}/blog/${params.slug}`;
+    devotional?.seo?.canonicalUrl ?? `${siteUrl}/blog/${params.slug}`;
   const canonical = {
     tagName: 'link',
     rel: 'canonical',
@@ -50,8 +50,8 @@ export const meta: V2_MetaFunction<typeof loader> = ({ data, params }) => {
   };
 
   // DESCRIPTION
-  const description = post?.seo?.description
-    ? [{ description: post.seo.description }]
+  const description = devotional?.seo?.description
+    ? [{ description: devotional.seo.description }]
     : [];
 
   // TODO: OG IMAGE
@@ -68,26 +68,26 @@ export const loader = async ({ params, request }: LoaderArgs) => {
 
   // const segment = `blog/${slug}`;
 
-  const post = await getPostBySlug({ preview, slug });
-  console.log({ post });
-  if (!post) {
+  const devotional = await getDevotionalBySlug({ preview, slug });
+  console.log({ devotional });
+  if (!devotional) {
     throw redirect(`/error/404`, 308);
   }
 
   return json({
-    post,
-    query: preview ? postBySlugQuery : null,
+    devotional,
+    query: preview ? devotionalBySlugQuery : null,
     params: preview ? { slug } : null,
   });
 };
 
-export default function BlogPostRoute() {
-  const { post, query, params } = useLoaderData<typeof loader>();
-  console.log({ post, query, params });
+export default function BlogDevotionalRoute() {
+  const { devotional, query, params } = useLoaderData<typeof loader>();
+  console.log({ devotional, query, params });
   return (
     <PreviewWrapper
-      data={post}
-      render={(data) => <Post post={data} />}
+      data={devotional}
+      render={(data) => <Devotional devotional={data} />}
       query={query}
       params={params}
     />
