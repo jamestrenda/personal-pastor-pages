@@ -24,7 +24,7 @@ export const productionUrl = definePlugin<{
           if (slug) {
             switch (document._type) {
               case 'post':
-                url = `${url}/${slug}`;
+                url = `${url}/blog/${slug}`;
                 break;
               default:
                 url = `${url}/${slug}`;
